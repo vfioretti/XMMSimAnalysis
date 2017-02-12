@@ -56,7 +56,7 @@ det_area = np.pi*((det_side/2.)**2.)  #cm2
 flux_part_sr = flux_part/(4.*np.pi)  # part/cm2 s sr
 
 R_big = 900.  # Sphere radius - cm
-q = 0.067  # Half angle of aperture - rad
+q = 0.067674276443221007  # Half angle of aperture - rad for a 610 mm radius inner sphere
 
 A_sphere = 4.*np.pi*(R_big**2.)   
 omega = np.pi*((np.sin(q))**2.)  # sr
