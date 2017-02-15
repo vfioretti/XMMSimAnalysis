@@ -318,12 +318,6 @@ for jfits in xrange(N_fits):
 													else:
 													    print "UNKNOWN PARTICLE!!!!!!!!!!!!!!!!!!!!!!"
 
-				 N_event_eq = len(where_sameevent)
-				 if (evt_id[where_sameevent[-1]+1] != evt_id[-1]):
-					index = where_sameevent[N_event_eq-1] + 1
-					where_sameevent = [index]
-					temp_index = index
-
 					hdulist.close()
 					break
 
