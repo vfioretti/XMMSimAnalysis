@@ -150,9 +150,9 @@ for jfits in xrange(N_fits):
 								if (where_from_shield[0].size):
 									flag_hit = 0
 									if e_part_det[jdet] == first_energy:
-									   leakage = 1
-								    else:
-									   leakage = 0
+										leakage = 1
+									else:
+										leakage = 0
 									
 									if (e_dep_det[jdet] == 0):
 										track_id_primary = track_id_det[jdet]
@@ -191,13 +191,11 @@ for jfits in xrange(N_fits):
 													vecPosPrimaryFlag.append(leakage)
 												else:
 													print "UNKNOWN PARTICLE!!!!!!!!!!!!!!!!!!!!!!"
-
 				N_event_eq = len(where_sameevent)
 				if (evt_id[where_sameevent[-1]+1] != evt_id[-1]):
 					index = where_sameevent[N_event_eq-1] + 1
 					where_sameevent = [index]
 					temp_index = index
-
 				else:
 					first_sameevent = where_sameevent[-1]+1
 					where_sameevent = np.arange(first_sameevent, len(evt_id), 1)
@@ -247,20 +245,21 @@ for jfits in xrange(N_fits):
 									if (where_from_shield[0].size):	
 										flag_hit = 0
 									   	if e_part_det[jdet] == first_energy:
-									    	leakage = 1
-								       	else:
-									      	leakage = 0
-									    if (e_dep_det[jdet] == 0):
-									    	track_id_primary = track_id_det[jdet]
-									    	ene_shower = e_dep_det[np.where(parent_id_det == track_id_primary)]
-									    	hit = [x for x in ene_shower if x > 0.0]
-									    	if hit: flag_hit = 1
-									    else:
-									    	flag_hit = 1
+									   		leakage = 1
+									   	else:
+									   		leakage = 0
+									   	
+									   	if (e_dep_det[jdet] == 0):
+									   		track_id_primary = track_id_det[jdet]
+									   		ene_shower = e_dep_det[np.where(parent_id_det == track_id_primary)]
+									   		hit = [x for x in ene_shower if x > 0.0]
+									   		if hit: flag_hit = 1
+									   	else:
+									   		flag_hit = 1
 									
 									   	if flag_hit:
 									   		if part_id_det[jdet] == 22:
-									      		vecPhotEnergy.append(e_part_det[jdet])
+									   			vecPhotEnergy.append(e_part_det[jdet])
 											   	vecPhotEventID.append(evt_id[index])
 											   	vecPhotCountEnergy.append(e_dep_det[jdet])
 											   	vecPhotPosX.append(pos_dep_x_det[jdet])
@@ -288,14 +287,8 @@ for jfits in xrange(N_fits):
 													else:
 														print "UNKNOWN PARTICLE!!!!!!!!!!!!!!!!!!!!!!"
 
-					N_event_eq = len(where_sameevent)
-					if (evt_id[where_sameevent[-1]+1] != evt_id[-1]):
-						index = where_sameevent[N_event_eq-1] + 1
-						where_sameevent = [index]
-						temp_index = index
-
-						hdulist.close()
-						break
+					hdulist.close()
+					break
 
 # write FITS for each product
 
