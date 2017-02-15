@@ -1,14 +1,14 @@
 """
- filterParticleFlux.py  -  description
+ filterXMMSim.py  -  description
  ---------------------------------------------------------------------------------
  filtering the particle flux entering the detector after 
  interaction with XMM proton shield
  ---------------------------------------------------------------------------------
- copyright            : (C) 2016 Valentina Fioretti
+ copyright            : (C) 2017 Valentina Fioretti
  email                : fioretti@iasfbo.inaf.it
  ----------------------------------------------
  Usage:
- python filterParticleFlux.py filedir N_file N_in source
+ python filterXMMSim.py filedir N_file N_in source
  ---------------------------------------------------------------------------------
  Parameters:
  - filedir = input path (string)
@@ -72,7 +72,6 @@ shield_id = 10
 det_id = 20
 box_id = 1000
 hat_id = 2000
-sphere_id = 3000
 
 if (source == 0): source_name = 'CXB'
 
@@ -124,22 +123,9 @@ for jfits in xrange(N_fits):
 				vol_id_sorted = [x[1] for x in sort_time]
 				e_part_sorted = [x[2] for x in sort_time]
 				
-				if  (vol_id_sorted[0] == sphere_id):
-					first_energy = e_part_sorted[0]
-					
-					gtime_sorted = np.array(gtime_sorted)
-					vol_id_sorted = np.array(vol_id_sorted)
-					e_part_sorted = np.array(e_part_sorted)
-
-					gtime_sorted = gtime_sorted[vol_id_sorted != sphere_id]
-					e_part_sorted = e_part_sorted[vol_id_sorted != sphere_id]
-					vol_id_sorted = vol_id_sorted[vol_id_sorted != sphere_id]				
-				else:
-					print "No touching the sphere!!!!!!"
-				
-				if (vol_id_sorted.size):
-				 if (vol_id_sorted[0] == shield_id):
+				if (vol_id_sorted[0] == shield_id):
 					where_det = np.where(sameev_vol_id == det_id)
+					first_energy = e_part_sorted[0]
 					if (where_det[0].size):
 						track_id_shield = sameev_track_id[np.where(sameev_vol_id == shield_id)]
 						e_dep_det = sameev_e_dep[where_det]
@@ -161,13 +147,13 @@ for jfits in xrange(N_fits):
 						
 							for jdet in xrange(len(where_det[0])):								
 								where_from_shield = np.where(track_id_shield == track_id_det[jdet])
-								if (where_from_shield[0].size):	
+								if (where_from_shield[0].size):
 									flag_hit = 0
 									if e_part_det[jdet] == first_energy:
-										leakage = 1
-									else:
-										leakage = 0
-										
+									   leakage = 1
+								    else:
+									   leakage = 0
+									
 									if (e_dep_det[jdet] == 0):
 										track_id_primary = track_id_det[jdet]
 										ene_shower = e_dep_det[np.where(parent_id_det == track_id_primary)]
@@ -194,7 +180,6 @@ for jfits in xrange(N_fits):
 												vecElecPosY.append(pos_dep_y_det[jdet])
 												vecElecProcID.append(proc_id_det[jdet])
 												vecElecPrimaryFlag.append(leakage)
-
 											else:
 												if part_id_det[jdet] == -11:
 													vecPosEnergy.append(e_part_det[jdet])
@@ -204,17 +189,16 @@ for jfits in xrange(N_fits):
 													vecPosPosY.append(pos_dep_y_det[jdet])
 													vecPosProcID.append(proc_id_det[jdet])
 													vecPosPrimaryFlag.append(leakage)
-
 												else:
 													print "UNKNOWN PARTICLE!!!!!!!!!!!!!!!!!!!!!!"
 
-				 N_event_eq = len(where_sameevent)
-				 if (evt_id[where_sameevent[-1]+1] != evt_id[-1]):
+				N_event_eq = len(where_sameevent)
+				if (evt_id[where_sameevent[-1]+1] != evt_id[-1]):
 					index = where_sameevent[N_event_eq-1] + 1
 					where_sameevent = [index]
 					temp_index = index
 
-				 else:
+				else:
 					first_sameevent = where_sameevent[-1]+1
 					where_sameevent = np.arange(first_sameevent, len(evt_id), 1)
 
@@ -236,19 +220,6 @@ for jfits in xrange(N_fits):
 					gtime_sorted = [x[0] for x in sort_time]
 					vol_id_sorted = [x[1] for x in sort_time]
 					e_part_sorted = [x[2] for x in sort_time]
-					
-					if  (vol_id_sorted[0] == sphere_id):
-					   first_energy = e_part_sorted[0]
-					   	
-					   gtime_sorted = np.array(gtime_sorted)
-					   vol_id_sorted = np.array(vol_id_sorted)
-					   e_part_sorted = np.array(e_part_sorted)
-
-					   gtime_sorted = gtime_sorted[vol_id_sorted != sphere_id]
-					   e_part_sorted = e_part_sorted[vol_id_sorted != sphere_id]
-					   vol_id_sorted = vol_id_sorted[vol_id_sorted != sphere_id]				
-					else:
-					   print "No touching the sphere!!!!!!"
 		
 					if (vol_id_sorted[0] == shield_id):
 						where_det = np.where(sameev_vol_id == det_id)
@@ -275,28 +246,27 @@ for jfits in xrange(N_fits):
 									where_from_shield = np.where(track_id_shield == track_id_det[jdet])
 									if (where_from_shield[0].size):	
 										flag_hit = 0
-										if e_part_det[jdet] == first_energy:
-										   leakage = 1
-										else:
-										   leakage = 0
-										   
-										if (e_dep_det[jdet] == 0):
-											track_id_primary = track_id_det[jdet]
-											ene_shower = e_dep_det[np.where(parent_id_det == track_id_primary)]
-											hit = [x for x in ene_shower if x > 0.0]
-											if hit: flag_hit = 1
-										else:
-											flag_hit = 1
-										
-										if flag_hit:
-											if part_id_det[jdet] == 22:
-												vecPhotEnergy.append(e_part_det[jdet])
-												vecPhotEventID.append(evt_id[index])
-												vecPhotCountEnergy.append(e_dep_det[jdet])
-												vecPhotPosX.append(pos_dep_x_det[jdet])
-												vecPhotPosY.append(pos_dep_y_det[jdet])
-												vecPhotProcID.append(proc_id_det[jdet])
-												vecPhotPrimaryFlag.append(leakage)
+									   	if e_part_det[jdet] == first_energy:
+									    	leakage = 1
+								       	else:
+									      	leakage = 0
+									    if (e_dep_det[jdet] == 0):
+									    	track_id_primary = track_id_det[jdet]
+									    	ene_shower = e_dep_det[np.where(parent_id_det == track_id_primary)]
+									    	hit = [x for x in ene_shower if x > 0.0]
+									    	if hit: flag_hit = 1
+									    else:
+									    	flag_hit = 1
+									
+									   	if flag_hit:
+									   		if part_id_det[jdet] == 22:
+									      		vecPhotEnergy.append(e_part_det[jdet])
+											   	vecPhotEventID.append(evt_id[index])
+											   	vecPhotCountEnergy.append(e_dep_det[jdet])
+											   	vecPhotPosX.append(pos_dep_x_det[jdet])
+											   	vecPhotPosY.append(pos_dep_y_det[jdet])
+											   	vecPhotProcID.append(proc_id_det[jdet])
+											   	vecPhotPrimaryFlag.append(leakage)
 											else:
 												if part_id_det[jdet] == 11:
 													vecElecEnergy.append(e_part_det[jdet])
@@ -316,16 +286,16 @@ for jfits in xrange(N_fits):
 														vecPosProcID.append(proc_id_det[jdet])
 														vecPosPrimaryFlag.append(leakage)
 													else:
-													    print "UNKNOWN PARTICLE!!!!!!!!!!!!!!!!!!!!!!"
+														print "UNKNOWN PARTICLE!!!!!!!!!!!!!!!!!!!!!!"
 
-				 N_event_eq = len(where_sameevent)
-				 if (evt_id[where_sameevent[-1]+1] != evt_id[-1]):
-					index = where_sameevent[N_event_eq-1] + 1
-					where_sameevent = [index]
-					temp_index = index
+					N_event_eq = len(where_sameevent)
+					if (evt_id[where_sameevent[-1]+1] != evt_id[-1]):
+						index = where_sameevent[N_event_eq-1] + 1
+						where_sameevent = [index]
+						temp_index = index
 
-					hdulist.close()
-					break
+						hdulist.close()
+						break
 
 # write FITS for each product
 
