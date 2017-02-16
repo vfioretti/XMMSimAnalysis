@@ -320,7 +320,7 @@ for jfits in xrange(N_fits):
 													    print "UNKNOWN PARTICLE!!!!!!!!!!!!!!!!!!!!!!"
 
 					hdulist.close()
-				    break
+					break
 
 # write FITS for each product
 
