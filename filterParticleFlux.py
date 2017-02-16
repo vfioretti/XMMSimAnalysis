@@ -104,6 +104,7 @@ for jfits in xrange(N_fits):
 			while evt_id[temp_index] == evt_id[temp_index+1]:
 				where_sameevent.append(temp_index+1)
 				temp_index += 1
+				print temp_index
 			else:
 				sameev_event_id = evt_id[where_sameevent]
 				sameev_vol_id = vol_id[where_sameevent]
