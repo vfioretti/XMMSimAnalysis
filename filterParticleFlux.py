@@ -141,7 +141,7 @@ for jfits in xrange(N_fits):
 				 if (vol_id_sorted[0] == shield_id):
 					where_det = np.where(sameev_vol_id == det_id)
 					if (where_det[0].size):
-						track_id_shield = sameev_track_id[np.where(sameev_vol_id == shield_id)]
+				 		track_id_shield = sameev_track_id[np.where(sameev_vol_id == shield_id)]
 						e_dep_det = sameev_e_dep[where_det]
 						e_part_det = sameev_e_part[where_det]
 						part_id_det = sameev_part_id[where_det]
@@ -208,17 +208,17 @@ for jfits in xrange(N_fits):
 												else:
 													print "UNKNOWN PARTICLE!!!!!!!!!!!!!!!!!!!!!!"
 
-				 N_event_eq = len(where_sameevent)
-				 if (evt_id[where_sameevent[-1]+1] != evt_id[-1]):
+				N_event_eq = len(where_sameevent)
+				if (evt_id[where_sameevent[-1]+1] != evt_id[-1]):
 					index = where_sameevent[N_event_eq-1] + 1
 					where_sameevent = [index]
 					temp_index = index
 
-				 else:
+				else:
 					first_sameevent = where_sameevent[-1]+1
 					where_sameevent = np.arange(first_sameevent, len(evt_id), 1)
 
-					sameev_event_id = evt_id[where_sameevent]
+				 	sameev_event_id = evt_id[where_sameevent]
 					sameev_vol_id = vol_id[where_sameevent]
 					sameev_track_id = track_id[where_sameevent]
 					sameev_parent_id = parent_id[where_sameevent]
@@ -249,8 +249,9 @@ for jfits in xrange(N_fits):
 					   vol_id_sorted = vol_id_sorted[vol_id_sorted != sphere_id]				
 					else:
 					   print "No touching the sphere!!!!!!"
-		
-					if (vol_id_sorted[0] == shield_id):
+					
+					if (vol_id_sorted.size):
+					 if (vol_id_sorted[0] == shield_id):
 						where_det = np.where(sameev_vol_id == det_id)
 						if (where_det[0].size):
 							track_id_shield = sameev_track_id[np.where(sameev_vol_id == shield_id)]
@@ -319,7 +320,7 @@ for jfits in xrange(N_fits):
 													    print "UNKNOWN PARTICLE!!!!!!!!!!!!!!!!!!!!!!"
 
 					hdulist.close()
-					break
+				    break
 
 # write FITS for each product
 
